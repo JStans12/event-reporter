@@ -4,18 +4,25 @@ require './lib/repl'
 
 class ReplTest < Minitest::Test
 
-  def test_repl_inits_case_handler
+  def test_repl_inits_queue_manager
     repl = Repl.new
 
-    assert repl.case_handler
-    assert_equal CaseHandler, repl.case_handler.class
+    assert repl.queue_manager
+    assert_equal QueueManager, repl.queue_manager.class
   end
 
-  def test_repl_inits_case_handler_inits_queue
+  def test_handle_input_loads_default
     repl = Repl.new
+    repl.handle_input(["load"])
 
-    assert repl.case_handler.queue_manager
-    assert_equal Queue, repl.case_handler.queue_manager.class
+    assert_equal 5175, repl.queue_manager.loaded_content.count
+  end
+
+  def test_handle_input_loads_specific
+    repl = Repl.new
+    repl.handle_input(["load","event_attendees.csv"])
+
+    assert_equal 19, repl.queue_manager.loaded_content.count
   end
 
 end

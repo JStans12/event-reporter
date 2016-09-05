@@ -1,10 +1,10 @@
-require './lib/case_handler'
+require './lib/queue_manager'
 
 class Repl
-  attr_reader :case_handler
+  attr_reader :queue_manager, :loaded_content
 
   def initialize
-    @case_handler = CaseHandler.new
+    @queue_manager = QueueManager.new
   end
 
   def main_loop
@@ -12,7 +12,56 @@ class Repl
     handle_input(gets.chomp!.split)
   end
 
+  ##### HANDLE RESPONSES #####
+
   def handle_input(input)
-    case_handler.delegate(input)
+    case input[0]
+
+    when "load"
+      queue_manager.load             unless input[1]
+      queue_manager.load(input[1])   if input[1]
+
+    when "find"
+      queue_manager.find(input[1..-1])
+
+    when "queue"
+      queue(input[1..-1])
+
+    when "help"
+      help(input[1..-1])
+
+    when "content"
+      puts queue_manager.loaded_content.count
+
+    when "quit"
+      abort
+
+    else
+      puts "#{input.join(" ")} is not a valid command"
+    end
   end
+
+
+  def queue(input)
+    case input[0]
+
+    when "count"
+      queue_manager.count
+
+    when "clear"
+      queue_manager.clear
+
+    when "district"
+      queue_manager.district
+
+    else
+      puts "#{input.join(" ")} is not a valid command"
+    end
+  end
+
+
+  def help(input)
+  end
+
+
 end
