@@ -13,29 +13,6 @@ class Repl
   end
 
   def handle_input(input)
-    case input[0]
-
-    when "load"
-      case_handler.load             unless input[1]
-      case_handler.load(input[1])   if input[1]
-
-    when "help"
-      case_handler.help(input[1..-1])
-
-    when "queue"
-      case_handler.queue(input[1..-1])
-
-    when "find"
-      case_handler.find(input[1..-1])
-
-    when "content"
-      puts case_handler.loaded_content.count
-
-    when "quit"
-      abort
-
-    else
-      puts "#{input.join(" ")} is not a valid command"
-    end
+    case_handler.delegate(input)
   end
 end

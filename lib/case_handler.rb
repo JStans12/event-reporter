@@ -1,4 +1,5 @@
 require './lib/queue'
+require './lib/sanitizer'
 require 'csv'
 
 class CaseHandler
@@ -8,27 +9,43 @@ class CaseHandler
     @queue_manager = Queue.new
   end
 
-  def delegate
 
+  def delegate(input)
+    case input[0]
+
+    when "load"
+      load             unless input[1]
+      load(input[1])   if input[1]
+
+    when "help"
+      help(input[1..-1])
+
+    when "queue"
+      queue(input[1..-1])
+
+    when "find"
+      queue_manager.find(input[1..-1], @loaded_content)
+
+    when "content"
+      puts loaded_content.count
+
+    when "quit"
+      abort
+
+    else
+      puts "#{input.join(" ")} is not a valid command"
+    end
   end
 
 
   def load(input = 'full_event_attendees.csv')
     # NEED error handling
     file_content = CSV.open input, headers: true, header_converters: :symbol
-    @loaded_content = file_content.map do |row|
-      row
-    end
-  end
-
-
-  def find(input)
-    queue_manager.find(input, @loaded_content)
+    @loaded_content = file_content.map { |row| Sanitizer.clean_row(row) }
   end
 
 
   def queue(input)
-    # NEED error handling
     case input[0]
 
     when "count"

@@ -28,9 +28,9 @@ class CaseHandlerTest < Minitest::Test
   def test_find_loads_the_queue
     handler = CaseHandler.new
     handler.load
-    handler.find(["first_name", "John"])
+    handler.queue_manager.find(["first_name", "John"], handler.loaded_content)
 
-    assert_equal 62, handler.queue_manager.count
+    assert_equal 63, handler.queue_manager.count
   end
 
 end

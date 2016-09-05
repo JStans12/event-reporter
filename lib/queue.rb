@@ -21,7 +21,7 @@ class Queue
   def find(input, loaded_content)
     # NEED error handling
     loaded_content.each do |row|
-      queue << row if row[input[0].to_sym] == input[1]
+      queue << row if row[input[0].to_sym].downcase == input[1].downcase
     end
   end
 end
