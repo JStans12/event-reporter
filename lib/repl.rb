@@ -1,8 +1,10 @@
 require './lib/queue_manager'
 require './lib/command_errors'
+require './lib/command_help'
 
 class Repl
   include CommandErrors
+  include CommandHelp
   attr_reader :queue_manager, :loaded_content
 
   def initialize
@@ -30,7 +32,7 @@ class Repl
       queue(input[1..-1])
 
     when "help"
-      help(input[1..-1])
+      command_help(input)
 
     when "content"
       puts queue_manager.loaded_content.count
@@ -68,10 +70,6 @@ class Repl
     else
       invalid_command(input)
     end
-  end
-
-
-  def help(input)
   end
 
 end

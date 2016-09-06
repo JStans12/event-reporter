@@ -3,12 +3,14 @@ require 'sunlight/congress'
 require './lib/district'
 require './lib/sanitizer'
 require './lib/district_caller'
+require './lib/command_errors'
 require 'pry'
 
 Sunlight::Congress.api_key = "253a5251ab7b42dbadbe3291b386bad6"
 
 class QueueManager
   include Sanitizer
+  include CommandErrors
   include DistrictCaller
   attr_accessor :queue, :loaded_content
 
@@ -77,6 +79,8 @@ class QueueManager
   end
 
   def load(input = 'full_event_attendees.csv')
+    return invalid_command([input]) unless file_exists(input)
+
     file_content = CSV.open input, headers: true, header_converters: :symbol
     @loaded_content = file_content.map { |row| clean_row(row) }
   end
