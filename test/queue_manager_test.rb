@@ -43,6 +43,8 @@ class QueueTest < Minitest::Test
     manager.find(["first_name", "John"])
 
     assert_equal 63, manager.queue.count
+    assert_equal "Hoy", manager.queue[0][:last_name]
+    assert manager.queue.all?{ |row| row[:first_name].downcase == "john" }
   end
 
   def test_clear_brings_queue_count_to_zero
@@ -61,7 +63,7 @@ class QueueTest < Minitest::Test
     manager.find(["last_name","Gray"])
     manager.district
 
-    assert manager.queue[0][:congressional_district]
+    assert manager.queue.all? { |row| row[:congressional_district] }
   end
 
   def test_district_doesnt_populate_first_name_john
@@ -70,7 +72,7 @@ class QueueTest < Minitest::Test
     manager.find(["first_name","John"])
     manager.district
 
-    refute manager.queue[0][:congressional_district]
+    refute manager.queue.all? { |row| row[:congressional_district] }
   end
 
   def test_prints

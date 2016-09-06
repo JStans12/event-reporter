@@ -6,6 +6,7 @@ module Sanitizer
     row[:last_name] = clean_last_name(row[:last_name])
     row[:zipcode] = clean_zipcode(row[:zipcode])
     row[:homephone] = clean_homephone(row[:homephone])
+    row[:city] = clean_city(row[:city])
     row
   end
 
@@ -25,6 +26,14 @@ module Sanitizer
 
   def clean_zipcode(zipcode)
     zipcode.to_s.rjust(5,"0")[0..4]
+  end
+
+  def clean_city(city)
+    city.to_s.strip.capitalize
+  end
+
+  def clean_state(state)
+    state.to_s.strip.upcase
   end
 
 end

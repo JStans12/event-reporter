@@ -2,11 +2,14 @@ require 'csv'
 require 'sunlight/congress'
 require './lib/district'
 require './lib/sanitizer'
+require './lib/district_caller'
 require 'pry'
 
 Sunlight::Congress.api_key = "253a5251ab7b42dbadbe3291b386bad6"
 
 class QueueManager
+  include Sanitizer
+  include DistrictCaller
   attr_accessor :queue, :loaded_content
 
   def initialize
@@ -29,22 +32,11 @@ class QueueManager
     puts "queue too big" if queue.count > 9
   end
 
-  def populate_queue_district
-    queue.each do |person|
-      person[:congressional_district] = district_by_zipcode(person[:zipcode]).district
-      #queue_district << district_by_zipcode(person[:zipcode])
-    end
-  end
-
-  def district_by_zipcode(zipcode)
-    Sunlight::Congress::District.by_zipcode(zipcode)
-  end
-
   def print(q = @queue)
     puts ""
     puts header
-    q.each_with_index do |row, index|
-      puts format_output(row, index)
+    q.each do |row|
+      puts format_output(row)
     end
   end
 
@@ -62,7 +54,7 @@ class QueueManager
     output
   end
 
-  def format_output(row, index)
+  def format_output(row)
     last_name = sprintf("%-14s", row[:last_name])
     first_name = sprintf("%-14s", row[:first_name])
     email = sprintf("%-37s", row[:email_address])
@@ -86,7 +78,7 @@ class QueueManager
 
   def load(input = 'full_event_attendees.csv')
     file_content = CSV.open input, headers: true, header_converters: :symbol
-    @loaded_content = file_content.map { |row| Sanitizer.clean_row(row) }
+    @loaded_content = file_content.map { |row| clean_row(row) }
   end
 
   def find(input)
@@ -94,6 +86,20 @@ class QueueManager
     loaded_content.each do |row|
       queue << row if row[input[0].to_sym].to_s.downcase == input[1..-1].join(" ").downcase
     end
+  end
+
+  def save_to(input)
+    Dir.mkdir("output-csv") unless Dir.exists?("output-csv")
+
+    File.open("output-csv/#{input}",'w') do |file|
+      queue.each do |row|
+        file.puts row
+      end
+    end
+  end
+
+  def export_html
+
   end
 
 

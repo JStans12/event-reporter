@@ -1,6 +1,8 @@
 require './lib/queue_manager'
+require './lib/command_errors'
 
 class Repl
+  include CommandErrors
   attr_reader :queue_manager, :loaded_content
 
   def initialize
@@ -8,7 +10,7 @@ class Repl
   end
 
   def main_loop
-    print "what woud you like to do? \n >> "
+    print "what would you like to do? \n >> "
     handle_input(gets.chomp!.split)
   end
 
@@ -37,7 +39,7 @@ class Repl
       abort
 
     else
-      puts "#{input.join(" ")} is not a valid command"
+      invalid_command(input)
     end
   end
 
@@ -56,16 +58,20 @@ class Repl
 
     when "print"
       queue_manager.print               unless input[1]
-      queue_manager.print_by(input[2])  if input[1]
+      queue_manager.print_by(input[2])  if input[1] == "by"
+      invalid_command(input)            unless input[1] && input[1] == "by"
+
+    when "save"
+      queue_manager.save_to(input[2]) if input[1] == "to"
+      invalid_command(input)          unless input[1] == "to"
 
     else
-      puts "#{input.join(" ")} is not a valid command"
+      invalid_command(input)
     end
   end
 
 
   def help(input)
   end
-
 
 end

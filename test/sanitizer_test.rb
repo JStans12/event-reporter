@@ -58,4 +58,16 @@ class SanitizerTest < Minitest::Test
     assert_equal "123-456-7890", Sanitizer.clean_homephone("123-456-7890")
   end
 
+  def test_clean_city
+    assert_equal "Athens", Sanitizer.clean_city("athens")
+    assert_equal "Athens", Sanitizer.clean_city("  athens  ")
+    assert_equal "Athens", Sanitizer.clean_city("Athens")
+  end
+
+  def test_clean_state
+    assert_equal "VT", Sanitizer.clean_state("vt")
+    assert_equal "VT", Sanitizer.clean_state("   vt   ")
+    assert_equal "VT", Sanitizer.clean_state("VT")
+  end
+
 end
