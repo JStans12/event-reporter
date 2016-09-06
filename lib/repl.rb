@@ -54,6 +54,10 @@ class Repl
     when "district"
       queue_manager.district
 
+    when "print"
+      queue_manager.print               unless input[1]
+      queue_manager.print_by(input[2])  if input[1]
+
     else
       puts "#{input.join(" ")} is not a valid command"
     end

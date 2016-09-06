@@ -1,0 +1,84 @@
+require 'minitest/autorun'
+require 'minitest/pride'
+require './lib/queue_manager'
+
+class QueueTest < Minitest::Test
+
+  def test_queue_initializes_empty
+    manager = QueueManager.new
+
+    assert_equal [], manager.queue
+  end
+
+  def test_loaded_content_initializes_empty
+    manager = QueueManager.new
+
+    assert_equal [], manager.loaded_content
+  end
+
+  def test_load_deaults_to_full_event_attendees
+    manager = QueueManager.new
+    manager.load
+
+    assert_equal 5175, manager.loaded_content.count
+  end
+
+  def test_can_load_other_files
+    manager = QueueManager.new
+    manager.load('event_attendees.csv')
+
+    assert_equal 19, manager.loaded_content.count
+  end
+
+  def test_count_is_zero_before_find
+    manager = QueueManager.new
+    manager.load
+
+    assert_equal 0, manager.queue.count
+  end
+
+  def test_find_loads_the_queue
+    manager = QueueManager.new
+    manager.load
+    manager.find(["first_name", "John"])
+
+    assert_equal 63, manager.queue.count
+  end
+
+  def test_clear_brings_queue_count_to_zero
+    manager = QueueManager.new
+    manager.load
+    manager.find(["first_name", "John"])
+
+    assert_equal 63, manager.queue.count
+    manager.clear
+    assert_equal 0, manager.queue.count
+  end
+
+  def test_district_populates_que_last_name_gray
+    manager = QueueManager.new
+    manager.load
+    manager.find(["last_name","Gray"])
+    manager.district
+
+    assert manager.queue[0][:congressional_district]
+  end
+
+  def test_district_doesnt_populate_first_name_john
+    manager = QueueManager.new
+    manager.load
+    manager.find(["first_name","John"])
+    manager.district
+
+    refute manager.queue[0][:congressional_district]
+  end
+
+  def test_prints
+    manager = QueueManager.new
+    manager.load
+    manager.find(["last_name","Gray"])
+    manager.district
+    manager.print
+  end
+
+end
