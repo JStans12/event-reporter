@@ -7,12 +7,11 @@ require 'pry'
 Sunlight::Congress.api_key = "253a5251ab7b42dbadbe3291b386bad6"
 
 class QueueManager
-  attr_accessor :queue, :loaded_content, :queue_legislators
+  attr_accessor :queue, :loaded_content
 
   def initialize
     @queue = []
     @loaded_content = []
-    @queue_legislators = []
   end
 
   def count
@@ -41,10 +40,10 @@ class QueueManager
     Sunlight::Congress::District.by_zipcode(zipcode)
   end
 
-  def print
+  def print(q = @queue)
     puts ""
     puts header
-    queue.each_with_index do |row, index|
+    q.each_with_index do |row, index|
       puts format_output(row, index)
     end
   end
@@ -73,21 +72,16 @@ class QueueManager
     address = sprintf("%-32s", row[:street])
     phone = sprintf("%-15s", row[:homephone])
     district = row[:congressional_district]
-    # district = queue_district[index].district unless queue_district.empty?
     output = "#{last_name}#{first_name}#{email}#{zipcode}#{city}#{state}#{address}#{phone}#{district}"
     output
   end
 
   def print_by(input)
-    sort_queue(input)
-    print
+    print(sort_queue(input))
   end
 
   def sort_queue(input)
-    repopulate = true unless @queue_district.empty?
-    @queue_district = []
-    queue.sort! { |a,b| a[input.to_sym] <=> b[input.to_sym]}
-    district if repopulate
+    queue.sort { |a,b| a[input.to_sym] <=> b[input.to_sym]}
   end
 
   def load(input = 'full_event_attendees.csv')
@@ -97,8 +91,6 @@ class QueueManager
 
   def find(input)
     @queue = []
-    @queue_legislators = []
-    @queue_district = []
     loaded_content.each do |row|
       queue << row if row[input[0].to_sym].to_s.downcase == input[1..-1].join(" ").downcase
     end
