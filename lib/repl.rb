@@ -26,7 +26,7 @@ class Repl
       queue_manager.load(input[1])   if input[1]
 
     when "find"
-      queue_manager.find(input[1..-1])
+      queue_manager.find(input[1], input[2..-1])
 
     when "queue"
       queue(input[1..-1])

@@ -21,14 +21,14 @@ class SanitizerTest < Minitest::Test
 
   def test_zipcodes_get_sanitized
     file_content = CSV.open 'event_attendees.csv', headers: true, header_converters: :symbol
-    loaded_content = file_content.map { |row| Sanitizer.clean_row(row) }
+    loaded_content = file_content.map { |attendee| Sanitizer.clean_attendee(attendee) }
 
     assert_equal "07306", loaded_content[3][:zipcode]
   end
 
   def test_first_names_get_sanitized
     file_content = CSV.open 'event_attendees.csv', headers: true, header_converters: :symbol
-    loaded_content = file_content.map { |row| Sanitizer.clean_row(row) }
+    loaded_content = file_content.map { |attendee| Sanitizer.clean_attendee(attendee) }
 
     assert_equal "David", loaded_content[3][:first_name]
   end
@@ -41,7 +41,7 @@ class SanitizerTest < Minitest::Test
 
   def test_last_names_get_sanitized
     file_content = CSV.open 'event_attendees.csv', headers: true, header_converters: :symbol
-    loaded_content = file_content.map { |row| Sanitizer.clean_row(row) }
+    loaded_content = file_content.map { |attendee| Sanitizer.clean_attendee(attendee) }
 
     assert_equal "Thomas", loaded_content[3][:last_name]
   end

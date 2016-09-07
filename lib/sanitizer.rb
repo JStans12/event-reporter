@@ -1,14 +1,14 @@
 module Sanitizer
   extend self
 
-  def clean_row(row)
-    row[:first_name] = clean_first_name(row[:first_name])
-    row[:last_name] = clean_last_name(row[:last_name])
-    row[:zipcode] = clean_zipcode(row[:zipcode])
-    row[:homephone] = clean_homephone(row[:homephone])
-    row[:city] = clean_city(row[:city])
-    row[:state] = clean_state(row[:state])
-    row
+  def clean_attendee(attendee)
+    attendee[:first_name] = clean_first_name(attendee[:first_name])
+    attendee[:last_name] = clean_last_name(attendee[:last_name])
+    attendee[:zipcode] = clean_zipcode(attendee[:zipcode])
+    attendee[:homephone] = clean_homephone(attendee[:homephone])
+    attendee[:city] = clean_city(attendee[:city])
+    attendee[:state] = clean_state(attendee[:state])
+    attendee
   end
 
   def clean_first_name(first_name)
