@@ -16,26 +16,26 @@ module CommandHelp
       puts "load a specified .csv file"
 
     when "queue count"
-      puts "returns a count of all entries in the queue"
+      puts "return a count of all entries in the queue"
 
     when "queue clear"
-      puts "clears the queue"
+      puts "clear the queue"
 
     when "queue district"
-      puts "loads congressional district information to the queue"
+      puts "load congressional district information to the queue"
       puts "Note: only works if the queue has less than 10 records"
 
     when "queue print"
-      puts "prints the queue to the terminal"
+      puts "print the queue to the terminal"
 
     when "queue print by <attribute>"
-      puts "prints the queue organized by a given attribute"
+      puts "print the queue organized by a given attribute"
 
     when "queue save to <filename.csv>"
       puts "save the current queue to a specified file in csv format"
 
     when "queue export html <filename.html>"
-      puts "create personalized spam letters for each person in the queue"
+      puts "create an html table from the queue"
 
     when "find <attribute> <criteria>"
       puts "load the queue with all entries meet the specified criteria for a speified attribute"

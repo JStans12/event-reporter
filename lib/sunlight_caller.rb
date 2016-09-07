@@ -1,4 +1,4 @@
-module DistrictCaller
+module SunlightCaller
   extend self
 
   def populate_queue_district

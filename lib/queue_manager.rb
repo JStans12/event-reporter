@@ -2,8 +2,9 @@ require 'csv'
 require 'sunlight/congress'
 require './lib/district'
 require './lib/sanitizer'
-require './lib/district_caller'
+require './lib/sunlight_caller'
 require './lib/command_errors'
+require 'erb'
 require 'pry'
 
 Sunlight::Congress.api_key = "253a5251ab7b42dbadbe3291b386bad6"
@@ -11,7 +12,7 @@ Sunlight::Congress.api_key = "253a5251ab7b42dbadbe3291b386bad6"
 class QueueManager
   include Sanitizer
   include CommandErrors
-  include DistrictCaller
+  include SunlightCaller
   attr_accessor :queue, :loaded_content
 
   def initialize
@@ -79,7 +80,7 @@ class QueueManager
   end
 
   def load(input = 'full_event_attendees.csv')
-    return invalid_command([input]) unless file_exists(input)
+    return not_a_file(input) unless file_exists(input)
 
     file_content = CSV.open input, headers: true, header_converters: :symbol
     @loaded_content = file_content.map { |row| clean_row(row) }
@@ -102,10 +103,19 @@ class QueueManager
     end
   end
 
-  def export_html
+  def export_html(input)
+    Dir.mkdir("output-html") unless Dir.exists?("output-html")
 
+    File.open("output-html/#{input}",'w') do |file|
+      file.puts format_table
+    end
   end
 
+  def format_table
+    table_template = File.read "table_template.erb"
+    erb_template = ERB.new table_template
+    table = erb_template.result(binding)
+  end
 
   # LEGISLATOR NAMES
 

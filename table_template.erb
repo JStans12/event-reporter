@@ -1,0 +1,24 @@
+<html>
+<head>
+  <link rel="stylesheet"; type="text/css"; href="./lib/stylesheet.css">
+  <meta charset='utf-8'>
+  <title>Event Attendees</title>
+</head>
+<body>
+
+  <h1>Event Attendees</h1>
+
+  <table>
+  <tr><th>Name</th><th>Address</th><th>Email</th><th>Phone</th><th>Congressional District</th></tr>
+    <% queue.each do |row| %>
+      <tr>
+        <td><%= "#{row[:first_name]} #{row[:last_name]}" %></td>
+        <td><%= "#{row[:street]}, #{row[:city]}, #{row[:state]} #{row[:zipcode]}" %></td>
+        <td><%= "#{row[:email_address]}" %></td>
+        <td><%= "#{row[:homephone]}" %></td>
+        <td><%= "#{row[:congressional_district]}" %></td>
+      </tr>
+    <% end %>
+  </table>
+</body>
+</html>

@@ -67,6 +67,9 @@ class Repl
       queue_manager.save_to(input[2]) if input[1] == "to"
       invalid_command(input)          unless input[1] == "to"
 
+    when "export"
+      queue_manager.export_html(input[2]) if input[1] == "html"
+
     else
       invalid_command(input)
     end

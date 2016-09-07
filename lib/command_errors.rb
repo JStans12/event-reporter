@@ -9,6 +9,10 @@ module CommandErrors
     File.file?(input)
   end
 
+  def not_a_file(input)
+    puts "#{input} is not a file"
+  end
+
   def validate_find_perameters
 
   end

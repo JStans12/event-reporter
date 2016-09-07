@@ -1,0 +1,23 @@
+body {
+  background-color: #dddddd;
+}
+
+h1 {
+  text-align: center;
+}
+
+table {
+  background-color: #cccccc;
+  border-collapse: collapse;
+  margin: 0px auto;
+}
+
+td, th {
+  border: 1px solid #999;
+  padding: 5px;
+  text-align: left;
+}
+
+tr:nth-child(even) {
+    background-color: #deedee;
+}
