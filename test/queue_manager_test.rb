@@ -83,4 +83,11 @@ class QueueTest < Minitest::Test
     manager.print
   end
 
+  def test_sort_queue_sorts_by_hash_key
+    manager = QueueManager.new
+    manager.queue = [ {a: 2, b: 1}, {a: 3, b: 2}, {a: 1, b: 3} ]
+
+    assert_equal [{a: 1, b: 3}, {a: 2, b: 1}, {a: 3, b: 2}], manager.sort_queue('a')
+  end
+
 end

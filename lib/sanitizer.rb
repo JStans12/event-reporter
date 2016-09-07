@@ -7,6 +7,7 @@ module Sanitizer
     row[:zipcode] = clean_zipcode(row[:zipcode])
     row[:homephone] = clean_homephone(row[:homephone])
     row[:city] = clean_city(row[:city])
+    row[:state] = clean_state(row[:state])
     row
   end
 
@@ -20,6 +21,7 @@ module Sanitizer
 
   def clean_homephone(homephone)
     homephone.gsub!(/[^0-9]/, "")
+    homephone.slice!(0)                           if homephone.length == 11
     return "000-000-0000"                         unless homephone.length == 10
     return homephone.insert(3,'-').insert(7,'-')  if homephone.length == 10
   end

@@ -5,7 +5,6 @@ require './lib/sanitizer'
 require './lib/sunlight_caller'
 require './lib/command_errors'
 require 'erb'
-require 'pry'
 
 Sunlight::Congress.api_key = "253a5251ab7b42dbadbe3291b386bad6"
 
@@ -36,6 +35,7 @@ class QueueManager
   end
 
   def print(q = @queue)
+    return if queue.empty?
     puts ""
     puts header
     q.each do |row|
@@ -97,6 +97,7 @@ class QueueManager
     Dir.mkdir("output-csv") unless Dir.exists?("output-csv")
 
     File.open("output-csv/#{input}",'w') do |file|
+      file.puts 
       queue.each do |row|
         file.puts row
       end
@@ -116,27 +117,5 @@ class QueueManager
     erb_template = ERB.new table_template
     table = erb_template.result(binding)
   end
-
-  # LEGISLATOR NAMES
-
-  # def populate_queue_legislators
-  #   queue.each do |person|
-  #     queue_legislators << legislators_by_zipcode(person[:zipcode])
-  #   end
-  # end
-  #
-  # def legislators_by_zipcode(zipcode)
-  #   Sunlight::Congress::Legislator.by_zipcode(zipcode)
-  # end
-  #
-  # def legislators_list(index)
-  #   unless queue_legislators.empty?
-  #     result = ""
-  #     queue_legislators[index].each do |l|
-  #       result << l.first_name + " " + l.last_name + ", "
-  #     end
-  #     result.strip.chop
-  #   end
-  # end
 
 end

@@ -61,7 +61,7 @@ class Repl
     when "print"
       queue_manager.print               unless input[1]
       queue_manager.print_by(input[2])  if input[1] == "by"
-      invalid_command(input)            unless input[1] && input[1] == "by"
+      invalid_command(input)            unless input[1] == "by" || input[1].nil?
 
     when "save"
       queue_manager.save_to(input[2]) if input[1] == "to"

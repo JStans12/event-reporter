@@ -56,6 +56,7 @@ class SanitizerTest < Minitest::Test
     assert_equal "000-000-0000", Sanitizer.clean_homephone("lakd12345(@)%(asd)")
     assert_equal "123-456-7890", Sanitizer.clean_homephone("123lkjad{@$%456}adf7890")
     assert_equal "123-456-7890", Sanitizer.clean_homephone("123-456-7890")
+    assert_equal "123-456-7890", Sanitizer.clean_homephone("11234567890")
   end
 
   def test_clean_city
