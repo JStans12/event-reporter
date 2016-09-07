@@ -1,18 +1,13 @@
 require 'csv'
-require 'sunlight/congress'
 require './lib/district'
 require './lib/sanitizer'
-require './lib/sunlight_caller'
 require './lib/command_errors'
 require './lib/printer'
 require 'erb'
 
-Sunlight::Congress.api_key = "253a5251ab7b42dbadbe3291b386bad6"
-
 class QueueManager
   include Sanitizer
   include CommandErrors
-  include SunlightCaller
   include Printer
   attr_accessor :queue, :loaded_content
 
@@ -32,7 +27,7 @@ class QueueManager
   end
 
   def district
-    populate_queue_district if queue.count < 10
+    SunlightDistrict.populate_queue_district(queue) if queue.count < 10
     puts "queue too big" if queue.count > 9
   end
 
