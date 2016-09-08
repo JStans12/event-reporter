@@ -31,10 +31,10 @@ class Repl
       find(input[1..-1])
 
     when "add"
-      queue_manager.add_to_queue(input[1], input[2..-1])
+      queue_manager.add_to_queue(input[1], input[2..-1].join(" "))
 
     when "subtract"
-      queue_manager.subtract_from_queue(input[1], input[2..-1])
+      queue_manager.subtract_from_queue(input[1], input[2..-1].join(" "))
 
     when "queue"
       queue(input[1..-1])
@@ -111,20 +111,20 @@ class Repl
 
   def add(input)
 
-    return queue_manager.add_to_queue(input[0], input[1..-1]) unless input[1].include?("(")
+    return queue_manager.add_to_queue(input[0], input[1..-1].join(" ")) unless input[1].include?("(")
 
     criteria = input[1..-1].to_a.join(" ").split(",")
-    criteria.map! { |argument| argument.delete("()").strip.split }
+    criteria.map! { |argument| argument.delete("()").strip }
     binding.pry
     criteria.each { |criteria| queue_manager.add_to_queue(input[0], criteria) }
   end
 
   def subtract_unless(input)
 
-    return queue_manager.subtract_from_queue_unless(input[0], input[1..-1]) unless input[1].include?("(")
+    return queue_manager.subtract_from_queue_unless(input[0], input[1..-1].join(" ")) unless input[1].include?("(")
 
     criteria = input[1..-1].to_a.join(" ").split(",")
-    criteria.map! { |argument| argument.delete("()").strip.split }
+    criteria.map! { |argument| argument.delete("()").strip }
     criteria.each { |criteria| queue_manager.subtract_from_queue_unless(input[0], criteria) }
   end
 

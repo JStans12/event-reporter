@@ -90,20 +90,20 @@ class QueueManager
   def add_to_queue(attribute, criteria)
     loaded_content.each do |attendee|
       unless queue.include? attendee
-        queue << attendee if attendee[attribute.to_sym].to_s.downcase == criteria.join(" ").downcase
+        queue << attendee if attendee[attribute.to_sym].to_s.downcase == criteria.downcase
       end
     end
   end
 
   def subtract_from_queue(attribute, criteria)
     queue.delete_if do |attendee|
-      attendee[attribute.to_sym].to_s.downcase == criteria.join(" ").downcase
+      attendee[attribute.to_sym].to_s.downcase == criteria.downcase
     end
   end
 
   def subtract_from_queue_unless(attribute, criteria)
     queue.delete_if do |attendee|
-      attendee[attribute.to_sym].to_s.downcase != criteria.join(" ").downcase
+      attendee[attribute.to_sym].to_s.downcase != criteria.downcase
     end
   end
 
