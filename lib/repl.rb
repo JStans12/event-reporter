@@ -113,8 +113,9 @@ class Repl
 
     return queue_manager.add_to_queue(input[0], input[1..-1]) unless input[1].include?("(")
 
-    criteria = input[1..-1].to_a
-    criteria.map! { |argument| argument.delete("(),").split }
+    criteria = input[1..-1].to_a.join(" ").split(",")
+    criteria.map! { |argument| argument.delete("()").strip.split }
+    binding.pry
     criteria.each { |criteria| queue_manager.add_to_queue(input[0], criteria) }
   end
 
@@ -122,8 +123,8 @@ class Repl
 
     return queue_manager.subtract_from_queue_unless(input[0], input[1..-1]) unless input[1].include?("(")
 
-    criteria = input[1..-1].to_a
-    criteria.map! { |argument| argument.delete("(),").split }
+    criteria = input[1..-1].to_a.join(" ").split(",")
+    criteria.map! { |argument| argument.delete("()").strip.split }
     criteria.each { |criteria| queue_manager.subtract_from_queue_unless(input[0], criteria) }
   end
 
