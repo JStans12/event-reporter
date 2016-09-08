@@ -1,6 +1,7 @@
 require './lib/queue_manager'
 require './lib/command_errors'
 require './lib/command_help'
+require 'pry'
 
 class Repl
   include CommandErrors
@@ -26,7 +27,8 @@ class Repl
       queue_manager.load(input[1])   if input[1]
 
     when "find"
-      queue_manager.find(input[1], input[2..-1])
+      # queue_manager.find(input[1], input[2..-1])
+      find(input[1..-1])
 
     when "add"
       queue_manager.add_to_queue(input[1], input[2..-1])
@@ -76,9 +78,53 @@ class Repl
     when "export"
       queue_manager.export_html(input[2]) if input[1] == "html"
 
+    when "find"
+      queue_manager.subtract_from_queue_unless(input[1], input[2..-1])
+
     else
       invalid_command(input)
     end
+  end
+
+  def find(input)
+
+    if input.include?("or")
+      mid = input.index("or")
+      find_or = true
+    end
+
+    if input.include?("and")
+      mid = input.index("and")
+      find_and = true
+    end
+
+    left_end = mid - 1 if mid
+
+    queue_manager.clear
+
+    add(input[0..left_end||=-1])
+
+    add(input[mid+1..-1]) if find_or
+    subtract_unless(input[mid+1..-1]) if find_and
+
+  end
+
+  def add(input)
+
+    return queue_manager.add_to_queue(input[0], input[1..-1]) unless input[1].include?("(")
+
+    criteria = input[1..-1].to_a
+    criteria.map! { |argument| argument.delete("(),").split }
+    criteria.each { |criteria| queue_manager.add_to_queue(input[0], criteria) }
+  end
+
+  def subtract_unless(input)
+
+    return queue_manager.subtract_from_queue_unless(input[0], input[1..-1]) unless input[1].include?("(")
+
+    criteria = input[1..-1].to_a
+    criteria.map! { |argument| argument.delete("(),").split }
+    criteria.each { |criteria| queue_manager.subtract_from_queue_unless(input[0], criteria) }
   end
 
 end

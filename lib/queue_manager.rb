@@ -21,7 +21,6 @@ class QueueManager
   end
 
   def clear
-    puts "queue emptied"
     @queue = []
   end
 
@@ -38,17 +37,7 @@ class QueueManager
 
   def print(q = @queue)
     return if queue.empty?
-    my_printer = Printer.new(q)
-    puts ""
-    puts my_printer.format_output(my_printer.header)
-    puts my_printer.seperator
-    q.each_with_index do |attendee, index|
-      puts my_printer.format_output(attendee)
-      if (index + 1) % 10 == 0
-        puts "showing records #{index - 8} - #{index + 1} of #{queue.count}. Press Enter to continue."
-        gets
-      end
-    end
+    my_printer = Printer.new(q).print
   end
 
   def print_by(attribute)
@@ -66,12 +55,12 @@ class QueueManager
     @loaded_content = file_content.map { |attendee| Sanitizer.clean_attendee(attendee) }
   end
 
-  def find(attribute, criteria)
-    @queue = []
-    loaded_content.each do |attendee|
-      queue << attendee if attendee[attribute.to_sym].to_s.downcase == criteria.join(" ").downcase
-    end
-  end
+  # def find(attribute, criteria)
+  #   @queue = []
+  #   loaded_content.each do |attendee|
+  #     queue << attendee if attendee[attribute.to_sym].to_s.downcase == criteria.join(" ").downcase
+  #   end
+  # end
 
   def save_to(input_file)
     Dir.mkdir("output-csv") unless Dir.exists?("output-csv")
@@ -100,13 +89,21 @@ class QueueManager
 
   def add_to_queue(attribute, criteria)
     loaded_content.each do |attendee|
-      queue << attendee if attendee[attribute.to_sym].to_s.downcase == criteria.join(" ").downcase
+      unless queue.include? attendee
+        queue << attendee if attendee[attribute.to_sym].to_s.downcase == criteria.join(" ").downcase
+      end
     end
   end
 
   def subtract_from_queue(attribute, criteria)
     queue.delete_if do |attendee|
       attendee[attribute.to_sym].to_s.downcase == criteria.join(" ").downcase
+    end
+  end
+
+  def subtract_from_queue_unless(attribute, criteria)
+    queue.delete_if do |attendee|
+      attendee[attribute.to_sym].to_s.downcase != criteria.join(" ").downcase
     end
   end
 

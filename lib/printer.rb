@@ -1,7 +1,7 @@
 require 'pry'
 
 class Printer
-  attr_reader :format_output, :header
+  attr_reader :format_output, :header, :queue
   attr_accessor :max_last_name, :max_first_name, :max_email_address, :max_city, :max_street
 
   def initialize(queue)
@@ -24,6 +24,19 @@ class Printer
     @max_street = (queue.max_by { |attendee| attendee[:street].length })[:street].length + 1
 
     @header = @queue.shift
+  end
+
+  def print
+    puts ""
+    puts format_output(header)
+    puts seperator
+    queue.each_with_index do |attendee, index|
+      puts format_output(attendee)
+      if (index + 1) % 10 == 0
+        puts "showing records #{index - 8} - #{index + 1} of #{queue.count}. Press Enter to continue."
+        gets
+      end
+    end
   end
 
   def format_output(attendee)

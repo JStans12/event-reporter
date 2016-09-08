@@ -13,8 +13,4 @@ module CommandErrors
     puts "#{input} is not a file"
   end
 
-  def validate_find_perameters
-
-  end
-
 end

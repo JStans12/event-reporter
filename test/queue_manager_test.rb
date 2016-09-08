@@ -40,7 +40,7 @@ class QueueTest < Minitest::Test
   def test_find_loads_the_queue
     manager = QueueManager.new
     manager.load
-    manager.find("first_name", ["John"])
+    manager.add_to_queue("first_name", ["John"])
 
     assert_equal 63, manager.queue.count
     assert_equal "Hoy", manager.queue[0][:last_name]
@@ -50,7 +50,7 @@ class QueueTest < Minitest::Test
   def test_clear_brings_queue_count_to_zero
     manager = QueueManager.new
     manager.load
-    manager.find("first_name", ["John"])
+    manager.add_to_queue("first_name", ["John"])
 
     assert_equal 63, manager.queue.count
     manager.clear
@@ -60,7 +60,7 @@ class QueueTest < Minitest::Test
   def test_district_populates_que_last_name_gray
     manager = QueueManager.new
     manager.load
-    manager.find("last_name",["Gray"])
+    manager.add_to_queue("last_name",["Gray"])
     manager.district
 
     assert manager.queue.all? { |row| row[:congressional_district] }
@@ -69,7 +69,7 @@ class QueueTest < Minitest::Test
   def test_district_doesnt_populate_first_name_john
     manager = QueueManager.new
     manager.load
-    manager.find("first_name",["John"])
+    manager.add_to_queue("first_name",["John"])
     manager.district
 
     refute manager.queue.all? { |row| row[:congressional_district] }
@@ -78,7 +78,7 @@ class QueueTest < Minitest::Test
   def test_prints
     manager = QueueManager.new
     manager.load
-    manager.find("last_name",["Gray"])
+    manager.add_to_queue("last_name",["Gray"])
     manager.district
     manager.print
   end
