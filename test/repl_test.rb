@@ -25,4 +25,12 @@ class ReplTest < Minitest::Test
     assert_equal 19, repl.queue_manager.loaded_content.count
   end
 
+  def test_handle_input_finds_single_criteria
+    repl = Repl.new
+    repl.queue_manager.load
+    repl.handle_input(["find", "first_name", "john"])
+
+    assert_equal 63, repl.queue_manager.queue.count
+  end
+
 end

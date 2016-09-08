@@ -55,13 +55,6 @@ class QueueManager
     @loaded_content = file_content.map { |attendee| Sanitizer.clean_attendee(attendee) }
   end
 
-  # def find(attribute, criteria)
-  #   @queue = []
-  #   loaded_content.each do |attendee|
-  #     queue << attendee if attendee[attribute.to_sym].to_s.downcase == criteria.join(" ").downcase
-  #   end
-  # end
-
   def save_to(input_file)
     Dir.mkdir("output-csv") unless Dir.exists?("output-csv")
 
@@ -89,10 +82,9 @@ class QueueManager
 
   def add_to_queue(attribute, criteria)
     loaded_content.each do |attendee|
-      unless queue.include? attendee
-        queue << attendee if attendee[attribute.to_sym].to_s.downcase == criteria.downcase
-      end
+      queue << attendee if attendee[attribute.to_sym].to_s.downcase == criteria.downcase
     end
+    queue.uniq!
   end
 
   def subtract_from_queue(attribute, criteria)

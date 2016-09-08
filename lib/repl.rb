@@ -13,7 +13,7 @@ class Repl
   end
 
   def main_loop
-    print "what would you like to do? \n >> "
+    print ">> "
     handle_input(gets.chomp!.split)
   end
 
@@ -27,7 +27,6 @@ class Repl
       queue_manager.load(input[1])   if input[1]
 
     when "find"
-      # queue_manager.find(input[1], input[2..-1])
       find(input[1..-1])
 
     when "add"
@@ -79,7 +78,7 @@ class Repl
       queue_manager.export_html(input[2]) if input[1] == "html"
 
     when "find"
-      queue_manager.subtract_from_queue_unless(input[1], input[2..-1])
+      queue_manager.subtract_from_queue_unless(input[1], input[2..-1].join(" "))
 
     else
       invalid_command(input)
@@ -87,42 +86,24 @@ class Repl
   end
 
   def find(input)
-
-    if input.include?("or")
-      mid = input.index("or")
-      find_or = true
-    end
-
-    if input.include?("and")
-      mid = input.index("and")
-      find_and = true
-    end
-
-    left_end = mid - 1 if mid
-
     queue_manager.clear
 
-    add(input[0..left_end||=-1])
+    (mid = input.index("or")) && (find_or = true) if input.include?("or")
+    (mid = input.index("and")) && (find_and = true) if input.include?("and")
+    left_end = mid - 1 if mid
 
+    add(input[0..left_end||=-1])
     add(input[mid+1..-1]) if find_or
     subtract_unless(input[mid+1..-1]) if find_and
-
   end
 
   def add(input)
-
-    return queue_manager.add_to_queue(input[0], input[1..-1].join(" ")) unless input[1].include?("(")
-
     criteria = input[1..-1].to_a.join(" ").split(",")
     criteria.map! { |argument| argument.delete("()").strip }
-    binding.pry
     criteria.each { |criteria| queue_manager.add_to_queue(input[0], criteria) }
   end
 
   def subtract_unless(input)
-
-    return queue_manager.subtract_from_queue_unless(input[0], input[1..-1].join(" ")) unless input[1].include?("(")
-
     criteria = input[1..-1].to_a.join(" ").split(",")
     criteria.map! { |argument| argument.delete("()").strip }
     criteria.each { |criteria| queue_manager.subtract_from_queue_unless(input[0], criteria) }
