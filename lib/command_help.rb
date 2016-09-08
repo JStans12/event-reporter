@@ -38,7 +38,13 @@ module CommandHelp
       puts "create an html table from the queue"
 
     when "find <attribute> <criteria>"
-      puts "load the queue with all entries meet the specified criteria for a speified attribute"
+      puts "clear current queue and load with all entries meet the specified criteria for a speified attribute"
+
+    when "add <attribute> <criteria>"
+      puts "add a specified attribute and criteria to the queue"
+
+    when "subtract <attribute> <criteria>"
+      puts "subtract a specified attribute and criteria from the queue"
 
     else
       invalid_command(input)
@@ -56,7 +62,9 @@ module CommandHelp
     puts "queue print by <attribute>"
     puts "queue save to <filename.csv>"
     puts "queue export html <filename.html>"
-    puts "find attribute <criteria>"
+    puts "find <attribute> <criteria>"
+    puts "add <attribute> <criteria>"
+    puts "subtract <attribute> <criteria>"
   end
 
 end

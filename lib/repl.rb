@@ -28,6 +28,12 @@ class Repl
     when "find"
       queue_manager.find(input[1], input[2..-1])
 
+    when "add"
+      queue_manager.add_to_queue(input[1], input[2..-1])
+
+    when "subtract"
+      queue_manager.subtract_from_queue(input[1], input[2..-1])
+
     when "queue"
       queue(input[1..-1])
 

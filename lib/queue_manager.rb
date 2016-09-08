@@ -98,11 +98,16 @@ class QueueManager
     table = erb_template.result(binding)
   end
 
-  def add_to_queue
-
+  def add_to_queue(attribute, criteria)
+    loaded_content.each do |attendee|
+      queue << attendee if attendee[attribute.to_sym].to_s.downcase == criteria.join(" ").downcase
+    end
   end
 
-  def subtract_from_queue
-
+  def subtract_from_queue(attribute, criteria)
+    queue.delete_if do |attendee|
+      attendee[attribute.to_sym].to_s.downcase == criteria.join(" ").downcase
+    end
   end
+
 end

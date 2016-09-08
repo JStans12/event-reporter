@@ -8,6 +8,7 @@ module Sanitizer
     attendee[:homephone] = clean_homephone(attendee[:homephone])
     attendee[:city] = clean_city(attendee[:city])
     attendee[:state] = clean_state(attendee[:state])
+    attendee[:street] = clean_street(attendee[:street])
     attendee
   end
 
@@ -36,6 +37,10 @@ module Sanitizer
 
   def clean_state(state)
     state.to_s.strip.upcase
+  end
+
+  def clean_street(street)
+    street.to_s.strip
   end
 
 end
