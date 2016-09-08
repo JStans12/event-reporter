@@ -85,6 +85,7 @@ class Repl
     end
   end
 
+
   def find(input)
     queue_manager.clear
 

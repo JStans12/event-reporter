@@ -46,6 +46,9 @@ module CommandHelp
     when "subtract <attribute> <criteria>"
       puts "subtract a specified attribute and criteria from the queue"
 
+    when "queue find <attribute> <criteria>"
+      puts "search the queue for a specified attribute and criteria"
+
     else
       invalid_command(input)
     end
@@ -62,6 +65,7 @@ module CommandHelp
     puts "queue print by <attribute>"
     puts "queue save to <filename.csv>"
     puts "queue export html <filename.html>"
+    puts "queue find <attribute> <criteria>"
     puts "find <attribute> <criteria>"
     puts "add <attribute> <criteria>"
     puts "subtract <attribute> <criteria>"

@@ -90,4 +90,20 @@ class QueueTest < Minitest::Test
     assert_equal [{a: 1, b: 3}, {a: 2, b: 1}, {a: 3, b: 2}], manager.sort_queue('a')
   end
 
+  def test_subtract_does_its_job
+    manager = QueueManager.new
+    manager.queue = [ {a: 2, b: 1}, {a: 3, b: 2}, {a: 1, b: 3} ]
+    manager.subtract_from_queue("a", "1")
+
+    assert_equal [ {a: 2, b: 1}, {a: 3, b: 2} ], manager.queue
+  end
+
+  def test_subtract_unless_does_its_job
+    manager = QueueManager.new
+    manager.queue = [ {a: 2, b: 1}, {a: 3, b: 2}, {a: 1, b: 3} ]
+    manager.subtract_from_queue_unless("a", "1")
+
+    assert_equal [ {a: 1, b: 3} ], manager.queue
+  end
+
 end
