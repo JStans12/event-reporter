@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/sanitizer'
@@ -63,6 +66,10 @@ class SanitizerTest < Minitest::Test
     assert_equal "Athens", Sanitizer.clean_city("athens")
     assert_equal "Athens", Sanitizer.clean_city("  athens  ")
     assert_equal "Athens", Sanitizer.clean_city("Athens")
+  end
+
+  def test_city_capitalize
+    assert_equal "Salt Lake City", Sanitizer.clean_city("salt lake city")
   end
 
   def test_clean_state

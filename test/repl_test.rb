@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/repl'
@@ -101,6 +104,16 @@ class ReplTest < Minitest::Test
     assert_equal 270, repl.queue_manager.queue.count
     repl.handle_input(["subtract", "first_name", "alicia"])
     assert_equal 267, repl.queue_manager.queue.count
+  end
+
+  def test_handle_input_clears
+    repl = Repl.new
+    repl.queue_manager.load
+
+    repl.handle_input(["find", "first_name", "john"])
+    assert_equal 63, repl.queue_manager.queue.count
+    repl.handle_input(["queue", "clear"])
+    assert_equal 0, repl.queue_manager.queue.count
   end
 
 end

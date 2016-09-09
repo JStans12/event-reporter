@@ -32,7 +32,7 @@ module Sanitizer
   end
 
   def clean_city(city)
-    city.to_s.strip.capitalize
+    city.to_s.strip.split.each { |word| word.capitalize! } .join(" ")
   end
 
   def clean_state(state)
