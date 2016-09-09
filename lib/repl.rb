@@ -16,8 +16,7 @@ class Repl
     print ">> "
     handle_input(gets.chomp!.split)
   end
-
-  ##### HANDLE RESPONSES #####
+  
 
   def handle_input(input)
     case input[0]

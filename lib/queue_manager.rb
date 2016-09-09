@@ -45,7 +45,7 @@ class QueueManager
   end
 
   def sort_queue(attribute)
-    queue.sort { |a,b| a[attribute.to_sym] <=> b[attribute.to_sym]}
+    queue.sort { |a,b| a[attribute.to_sym] <=> b[attribute.to_sym] }
   end
 
   def load(input_file = 'full_event_attendees.csv')
